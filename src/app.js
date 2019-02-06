@@ -6,6 +6,6 @@ const App = express()
 
 App.use(bodyparser.json())
 
-App.use(RecipesRouter)
+App.use(ProductsRouter)
 
 export { App }
