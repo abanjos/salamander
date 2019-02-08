@@ -1,4 +1,4 @@
-import { Product } from './domain'
+import { Product } from '../../domain/product/Product'
 
 const CreateProduct = class CreateProduct {
     constructor({ ProductRepository })
