@@ -1,7 +1,7 @@
 import express from 'express'
-import { productsController } from './controllers'
-import { CreateProduct } from './application'
-import { product as Product } from '../../database/models'
+import { ProductsController } from './product/ProductsControler'
+import { CreateProduct } from '../application/product/CreateProduct'
+import { product as ProductModel } from '../infra/database/models'
 import { ProductRepository } from './infra.js'
 
 const router = express.Router()
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.post('/products', (req, res) => {
 
-  const productRepository = new ProductRepository(Product)
+  const productRepository = new ProductRepository(ProductModel)
 
   const context = {
     request: req,

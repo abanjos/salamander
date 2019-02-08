@@ -1,9 +1,5 @@
 import { Sequelize, DataTypes } from 'sequelize'
-import { Product } from './domain'
-
-const DATABASE_URL = process.env.DATABASE_URL || 'postgres://salamander:senhasenha@localhost:5432/salamanderdev'
-const sequelizeOptions = { operatorsAliases: false }
-const sequelize = new Sequelize(DATABASE_URL, { sequelizeOptions })
+import { Product } from '../../domain/product/Product'
 
 const ProductRepository = class ProductRepository {
     constructor({ ProductModel })
