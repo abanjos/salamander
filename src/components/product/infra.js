@@ -5,18 +5,6 @@ const DATABASE_URL = process.env.DATABASE_URL || 'postgres://salamander:senhasen
 const sequelizeOptions = { operatorsAliases: false }
 const sequelize = new Sequelize(DATABASE_URL, { sequelizeOptions })
 
-const ProductModel = sequelize.define('product', {
-    display_name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    price: DataTypes.INTEGER
-})
-
-const ProductCategoryModel = sequelize.define('product_category', {
-    display_name: DataTypes.STRING
-})
-
-ProductModel.belongsTo(ProductCategoryModel)
-
 const ProductRepository = class ProductRepository {
     constructor({ ProductModel })
 
@@ -35,5 +23,5 @@ const ProductRepository = class ProductRepository {
     }
 }
 
-export { ProductModel, ProductCategoryModel, ProductRepository }
+export { ProductRepository }
 

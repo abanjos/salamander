@@ -12,3 +12,5 @@ const CreateProduct = class CreateProduct {
         return await this.ProductRepository.add(product)
     }
 }
+
+export { CreateProduct }
