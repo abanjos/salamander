@@ -5,12 +5,12 @@
   "main": ".eslintrc.js",
   "scripts": {
     "start": "cross-env NODE_PATH=. node ./build/index.js",
-    "test": "jest",
+    "test": "cross-env NODE_PATH=. jest",
     "build": "babel ./src --out-dir ./build --source-maps inline --delete-dir-on-start",
-    "db:drop": "sequelize db:drop --url ",
-    "db:create": "sequelize db:create --url ",
-    "db:migrate": "sequelize db:migrate --url ",
-    "db:migrate:undo": "sequelize db:migrate:undo --url "
+    "db:drop": "sequelize db:drop",
+    "db:create": "sequelize db:create",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo"
   },
   "keywords": [],
   "author": "",

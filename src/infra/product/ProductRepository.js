@@ -1,4 +1,3 @@
-import { Sequelize, DataTypes } from 'sequelize'
 import { Product } from '../../domain/product/Product'
 
 const ProductRepository = class ProductRepository {
@@ -9,6 +8,12 @@ const ProductRepository = class ProductRepository {
     }
 
     async add(product){
+
+        const { error, value } = product.validate()
+        if (error !== null) {
+            throw new Error(error)
+        }
+
         const newProduct = await this.ProductModel.create({ 
             display_name: product.display_name,
             description: product.description,

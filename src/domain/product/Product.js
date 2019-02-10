@@ -1,10 +1,10 @@
 import Joi from 'joi'
 
 const productSchema = Joi.object().keys({
-    id: Joi.number().required(),
-    display_name: Joi.string().required(),
+    id: Joi.number(),
+    display_name: Joi.string().min(1).required(),
     description: Joi.string().required(),
-    price: Joi.number().required()
+    price: Joi.number().min(0).required()
 })
 
 const Product = class Product {
@@ -20,7 +20,10 @@ const Product = class Product {
         this.display_name = display_name
         this.description = description
         this.price = price
-        Joi.validate(this, productSchema)
+    }
+
+    validate() {
+        return Joi.validate(this, productSchema)
     }
 }
 
