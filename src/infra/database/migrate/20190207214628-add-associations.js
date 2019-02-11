@@ -5,15 +5,16 @@ function addProductAssociations ( queryInterface, Sequelize) {
   return queryInterface.addColumn (
     'products',
     'product_category_id',
-    { 
+    {
       type: Sequelize.INTEGER,
-      references: 
-      { 
+      allowNull: false,
+      references:
+      {
         model: 'product_categories',
         key: 'id'
       },
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL'
+      onDelete: 'CASCADE'
     }
   )
   .then(() => {
@@ -23,6 +24,7 @@ function addProductAssociations ( queryInterface, Sequelize) {
       'product_id',
       {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:
         {
           model: 'products',
@@ -53,10 +55,11 @@ function addUserAssociations (queryInterface, Sequelize) {
   return queryInterface.addColumn (
     'user_addresses',
     'user_id',
-    { 
+    {
       type: Sequelize.INTEGER,
-      references: 
-      { 
+      allowNull: false,
+      references:
+      {
         model: 'users',
         key: 'id'
       },
@@ -71,13 +74,14 @@ function addUserAssociations (queryInterface, Sequelize) {
       'user_id',
       {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:
         {
           model: 'users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
       }
     )
   })
@@ -101,10 +105,11 @@ function addOrdersAssociations ( queryInterface, Sequelize) {
   return queryInterface.addColumn (
     'order_items',
     'order_id',
-    { 
+    {
       type: Sequelize.INTEGER,
-      references: 
-      { 
+      allowNull: false,
+      references:
+      {
         model: 'orders',
         key: 'id'
       },
@@ -119,6 +124,7 @@ function addOrdersAssociations ( queryInterface, Sequelize) {
       'shipping_address_id',
       {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:
         {
           model: 'order_addresses',
@@ -136,6 +142,7 @@ function addOrdersAssociations ( queryInterface, Sequelize) {
       'billing_address_id',
       {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references:
         {
           model: 'order_addresses',
@@ -175,7 +182,7 @@ module.exports = {
         .then(() => {
           return addOrdersAssociations(queryInterface, Sequelize)
         })
-      })    
+      })
   },
 
   down: (queryInterface, Sequelize) => {

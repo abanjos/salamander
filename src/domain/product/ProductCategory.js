@@ -1,7 +1,7 @@
 import Joi from 'joi'
 
 const productCategorySchema = Joi.object().keys({
-    id: Joi.number(),
+    id: Joi.number().optional(),
     display_name: Joi.string().min(2).required(),
 })
 

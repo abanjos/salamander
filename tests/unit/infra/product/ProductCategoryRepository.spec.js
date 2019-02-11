@@ -15,7 +15,11 @@ describe('Infra :: Product :: ProductCategoryRepository', () => {
         test('When product category is valid persists the product category.', async () => {
             const productCategory = new ProductCategory({ display_name: 'Limpeza' })
 
-            expect.assertions(2)
+            expect.assertions(3)
+            
+            const { error } = productCategory.validate()
+            expect(error).toBeNull()
+            
 
             const created = await repository.add(productCategory)
             expect(created.id).toBeDefined()
@@ -26,8 +30,10 @@ describe('Infra :: Product :: ProductCategoryRepository', () => {
             const productCategory = new ProductCategory({ display_name: '' })
 
             expect.assertions(2)
-            const { error, value } = productCategory.validate()
+
+            const { error } = productCategory.validate()
             expect(error).not.toBeNull()
+
             await expect(repository.add(productCategory)).rejects.toThrow()
 
         })

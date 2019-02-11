@@ -1,27 +1,35 @@
-import { Product } from '../../domain/product/Product'
+import { ProductMapper } from './ProductMapper'
 
 const ProductRepository = class ProductRepository {
-    constructor({ ProductModel })
+  constructor({ ProductModel })
 
-    {
-        this.ProductModel = ProductModel
+  {
+    this.ProductModel = ProductModel
+  }
+
+  async add(product){
+
+    const productValidationResult = product.validate()
+    if (productValidationResult.error !== null) {
+      throw new Error(productValidationResult.error)
     }
 
-    async add(product){
-
-        const { error, value } = product.validate()
-        if (error !== null) {
-            throw new Error(error)
-        }
-
-        const newProduct = await this.ProductModel.create({ 
-            display_name: product.display_name,
-            description: product.description,
-            price: product.price             
-        })
-
-        return new Product(newProduct)
+    const productCategoryValidationResult = product.productCategory.validate()
+    if (productCategoryValidationResult.error !== null) {
+      throw new Error(productCategoryValidationResult.error)
     }
+
+    const newProduct = await this.ProductModel.create({
+      display_name: product.display_name,
+      description: product.description,
+      price: product.price,
+      product_category_id: product.productCategory.id
+    })
+
+    const entity = ProductMapper.toEntity(newProduct)
+    entity.productCategory = product.productCategory
+    return entity
+  }
 }
 
 export { ProductRepository }
