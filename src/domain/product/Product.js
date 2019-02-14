@@ -1,10 +1,12 @@
 import Joi from 'joi'
+import { ProductCategory } from './ProductCategory';
 
 const productSchema = Joi.object().keys({
-    id: Joi.number().required(),
-    display_name: Joi.string().required(),
+    id: Joi.number(),
+    display_name: Joi.string().min(1).required(),
     description: Joi.string().required(),
-    price: Joi.number().required()
+    price: Joi.number().min(0).required(),
+    productCategory: Joi.object().type(ProductCategory).required()
 })
 
 const Product = class Product {
@@ -12,7 +14,8 @@ const Product = class Product {
         id,
         display_name,
         description,
-        price
+        price,
+        productCategory
     })
 
     {
@@ -20,7 +23,11 @@ const Product = class Product {
         this.display_name = display_name
         this.description = description
         this.price = price
-        Joi.validate(this, productSchema)
+        this.productCategory = productCategory
+    }
+
+    validate() {
+        return Joi.validate(this, productSchema)
     }
 }
 
