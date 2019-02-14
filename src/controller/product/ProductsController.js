@@ -1,7 +1,9 @@
-const productsController = {
-  create(context) {
+const ProductsController = {
+  async create(context) {
     const { createProduct, request } = context
-    const createdProduct = createProduct.execute(request.body)
+
+    const createdProduct = await createProduct.execute(request.body)
+
     return {
       id: createdProduct.id,
       display_name: createdProduct.display_name,
@@ -11,4 +13,4 @@ const productsController = {
   }
 }
 
-export { productsController }
+export { ProductsController }

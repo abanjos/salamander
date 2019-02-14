@@ -4,38 +4,38 @@ import { ProductCategory } from '../../../../src/domain/product/ProductCategory'
 
 
 describe('Infra :: Product :: ProductCategoryRepository', () => {
-    
-    let repository
 
-    beforeEach(() => {
-        repository = new ProductCategoryRepository({ ProductCategoryModel })
+  let repository
+
+  beforeEach(() => {
+    repository = new ProductCategoryRepository(ProductCategoryModel)
+  })
+
+  describe('#add', () => {
+    test('When product category is valid persists the product category.', async () => {
+      const productCategory = new ProductCategory({ display_name: 'Limpeza' })
+
+      expect.assertions(3)
+
+      const { error } = productCategory.validate()
+      expect(error).toBeNull()
+
+
+      const created = await repository.add(productCategory)
+      expect(created.id).toBeDefined()
+      expect(created.display_name).toBe('Limpeza')
     })
 
-    describe('#add', () => {
-        test('When product category is valid persists the product category.', async () => {
-            const productCategory = new ProductCategory({ display_name: 'Limpeza' })
+    test('When product category is not valid.', async () => {
+      const productCategory = new ProductCategory({ display_name: '' })
 
-            expect.assertions(3)
-            
-            const { error } = productCategory.validate()
-            expect(error).toBeNull()
-            
+      expect.assertions(2)
 
-            const created = await repository.add(productCategory)
-            expect(created.id).toBeDefined()
-            expect(created.display_name).toBe('Limpeza')
-        })
+      const { error } = productCategory.validate()
+      expect(error).not.toBeNull()
 
-        test('When product category is not valid.', async () => {
-            const productCategory = new ProductCategory({ display_name: '' })
+      await expect(repository.add(productCategory)).rejects.toThrow()
 
-            expect.assertions(2)
-
-            const { error } = productCategory.validate()
-            expect(error).not.toBeNull()
-
-            await expect(repository.add(productCategory)).rejects.toThrow()
-
-        })
     })
+  })
 })

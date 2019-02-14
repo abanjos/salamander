@@ -9,7 +9,7 @@ describe('Infra :: Product :: ProductRepository', () => {
   let repository, defaultCategory
 
   beforeEach( async () => {
-    repository = new ProductRepository({ ProductModel })
+    repository = new ProductRepository(ProductModel)
     sequelize.truncate({ cascade: true })
 
     defaultCategory = await ProductCategoryModel.create({ display_name: 'Padrão' })

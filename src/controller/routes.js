@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   res.send(response)
 })
 
-router.post('/products', (req, res) => {
+router.post('/products', (req, res, next) => {
 
   const productRepository = new ProductRepository(ProductModel)
   const productCategoryRepository = new ProductCategoryRepository(ProductCategoryModel)
@@ -22,8 +22,13 @@ router.post('/products', (req, res) => {
     createProduct: new CreateProduct(productRepository, productCategoryRepository)
   }
 
-  const response = productsController.create(context)
-  res.send(response)
+  try {
+    const response = productsController.create(context)
+    res.send(response)
+  }
+  catch(error) {
+    next(error)
+  }
 })
 
 
