@@ -2,7 +2,7 @@
 
 function addProductAssociations ( queryInterface, Sequelize) {
   //product belongsTo product_category
-  return queryInterface.addColumn (
+  return queryInterface.addColumn(
     'products',
     'product_category_id',
     {
@@ -17,24 +17,24 @@ function addProductAssociations ( queryInterface, Sequelize) {
       onDelete: 'CASCADE'
     }
   )
-  .then(() => {
-    //product_image belongsTo product
-    return queryInterface.addColumn (
-      'product_images',
-      'product_id',
-      {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references:
+    .then(() => {
+      //product_image belongsTo product
+      return queryInterface.addColumn (
+        'product_images',
+        'product_id',
         {
-          model: 'products',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      }
-    )
-  })
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references:
+          {
+            model: 'products',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE'
+        }
+      )
+    })
 }
 
 function removeProductsAssociation (queryInterface, Sequelize) {
@@ -67,37 +67,37 @@ function addUserAssociations (queryInterface, Sequelize) {
       onDelete: 'CASCADE'
     }
   )
-  .then(() => {
-    //order belongsTo user
-    return queryInterface.addColumn (
-      'orders',
-      'user_id',
-      {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references:
+    .then(() => {
+      //order belongsTo user
+      return queryInterface.addColumn (
+        'orders',
+        'user_id',
         {
-          model: 'users',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      }
-    )
-  })
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references:
+          {
+            model: 'users',
+            key: 'id'
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE'
+        }
+      )
+    })
 }
 
 function removeUsersAssociation (queryInterface, Sequelize) {
   //remove user_address belongsTo user
-    return queryInterface.removeColumn(
-      'user_addresses',
+  return queryInterface.removeColumn(
+    'user_addresses',
+    'user_id'
+  )
+    .then(() => {
+      //remove order belongsTo user
+      'orders',
       'user_id'
-    )
-      .then(() => {
-        //remove order belongsTo user
-        'orders',
-        'user_id'
-      })
+    })
 }
 
 function addOrdersAssociations ( queryInterface, Sequelize) {
@@ -158,7 +158,7 @@ function addOrdersAssociations ( queryInterface, Sequelize) {
 function removeOrdersAssociation (queryInterface, Sequelize) {
   //remove orders_items belongsTo order
     return queryInterface.removeColumn(
-      'orders_items',
+      'order_items',
       'order_id'
     )
       .then(() => {
