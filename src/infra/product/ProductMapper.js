@@ -7,8 +7,8 @@ const ProductMapper = {
   },
 
   toDatabase (product) {
-    const { display_name, description, price } = product
-    return { display_name, description, price }
+    const { display_name, description, price, productCategory } = product
+    return { display_name, description, price, product_category_id: productCategory.id }
   }
 }
 

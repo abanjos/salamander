@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     display_name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    product_category_id: DataTypes.INTEGER
+    product_category_id: {
+      type: DataTypes.INTEGER,
+      field: 'product_category_id'
+    }
   }, {});
   product.associate = function(models) {
     product.hasMany(models.product_image)

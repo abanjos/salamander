@@ -7,8 +7,12 @@ const CreateProduct = class CreateProduct {
   }
 
   async execute ({ display_name, description, price, product_category_id }) {
-    const productCategory = await this.ProductCategoryRepository.getById(product_category_id)
-    const product = new Product({ display_name, description, price, productCategory })
+    const result = await this.ProductCategoryRepository.getById(product_category_id)
+
+    if(result.error)
+      return { error: result.error, value: null }
+
+    const product = new Product({ display_name, description, price, productCategory: result.value })
 
     return await this.ProductRepository.add(product)
   }
