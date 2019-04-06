@@ -1,37 +1,39 @@
 import { ProductMapper } from './ProductMapper'
 
 const ProductRepository = class ProductRepository {
-  constructor(ProductModel)
-
-  {
+  constructor(ProductModel) {
     this.ProductModel = ProductModel
   }
 
   async add(product){
-    const productValidationResult = product.validate()
-    if (productValidationResult.error !== null) {
-      throw new Error(productValidationResult.error)
-    }
+    const { error } = product.validate()
 
-    const productCategoryValidationResult = product.productCategory.validate()
-    if (productCategoryValidationResult.error !== null) {
-      throw new Error(productCategoryValidationResult.error)
-    }
+    if(error)
+      return { error, value: null }
 
     try {
-      const newProduct = await this.ProductModel.create({
-        display_name: product.display_name,
-        description: product.description,
-        price: product.price,
-        product_category_id: product.productCategory.id
-      })
+      const newProduct = await this.ProductModel.create(ProductMapper.toDatabase(product))
 
       const entity = ProductMapper.toEntity(newProduct)
+
       entity.productCategory = product.productCategory
-      return entity
+
+      return { error: false, value: entity }
     }
     catch(err) {
-      console.log(err)
+      return { error: err, value: null }
+    }
+  }
+
+  async getAll() {
+    try {
+      const productsData = await this.ProductModel.findAll({ attributes: ['id', 'display_name', 'price', 'description']})
+      const productsEntities = productsData.map(ProductMapper.toEntity)
+
+      return { error: false, value: productsEntities }
+    }
+    catch(err) {
+      return { error: err, value: null }
     }
   }
 }

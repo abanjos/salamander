@@ -1,18 +1,31 @@
 import express from 'express'
 import { CreateProduct } from '../application/product/CreateProduct'
 import { product as ProductModel, product_category as ProductCategoryModel } from '../infra/database/models'
-import { ProductCategoryRepository } from '../infra/product/ProductCategoryRepository'
+import { ProductCategoryRepository } from '../infra/product_category/ProductCategoryRepository'
 import { ProductRepository } from '../infra/product/ProductRepository'
-
+import { ProductsController } from '../controller/product/ProductsController'
+import Bounce from 'bounce'
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  const response = { "yeah" : "it works" }
-  res.send(response)
+router.get('/products', async (req, res, next) => {
+  const productRepository = new ProductRepository(ProductModel)
+  const context = {
+    request: req,
+    ListProducts: new ListProducts(productRepository)
+  }
+
+  try {
+    const response = await ProductsController.getAll(context)
+    res.status(200).send(response)
+  }
+  catch(error) {
+    Bounce.rethrow(error, 'system')
+    next(error)
+  }
 })
 
-router.post('/products', (req, res, next) => {
+router.post('/products', async (req, res, next) => {
 
   const productRepository = new ProductRepository(ProductModel)
   const productCategoryRepository = new ProductCategoryRepository(ProductCategoryModel)
@@ -23,10 +36,12 @@ router.post('/products', (req, res, next) => {
   }
 
   try {
-    const response = productsController.create(context)
-    res.send(response)
+    const response = await ProductsController.create(context)
+    res.status(201).send(response)
   }
   catch(error) {
+    Bounce.rethrow(error, 'system')
+
     next(error)
   }
 })
